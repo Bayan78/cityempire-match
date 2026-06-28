@@ -5,26 +5,28 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
 <title>CityEmpire Match</title>
 <script src="https://telegram.org/js/telegram-web-app.js"></script>
+<script src="https://sad.adsgram.ai/js/sad.min.js"></script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@700;900&family=Fredoka:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
 :root{
-  --bg-0:#150f2c; --bg-1:#241a47; --panel:#1e1640; --panel-2:#2a2056;
-  --line:#3a2d6b; --gold:#ffd24a; --gold-2:#f5b21a; --gold-deep:#b07d12;
-  --text:#f4f0ff; --muted:#b0a6dd;
-  --g-amethyst:#b46cff; --g-emerald:#3ddc97; --g-citrine:#ffd24a;
-  --g-ruby:#ff5d73; --g-sapphire:#4aa8ff; --g-topaz:#ff9a3d;
-  --ok:#3ddc97; --bad:#ff5d73;
-  --shadow:0 10px 30px rgba(0,0,0,.45);
+  --bg-0:#1a0f55; --bg-1:#3a1ca0; --panel:#26156e; --panel-2:#3a23a8;
+  --line:#6a4ce0; --gold:#ffd83a; --gold-2:#ffb01e; --gold-deep:#c9800f;
+  --text:#ffffff; --muted:#cdbfff;
+  --g-amethyst:#c44dff; --g-emerald:#16e58a; --g-citrine:#ffd21a;
+  --g-ruby:#ff3666; --g-sapphire:#1f9bff; --g-topaz:#ff871e;
+  --ok:#16e58a; --bad:#ff3666;
+  --shadow:0 10px 30px rgba(20,0,60,.5);
 }
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
 html,body{margin:0;height:100%;overscroll-behavior:none}
 body{
   font-family:'Fredoka',system-ui,sans-serif;color:var(--text);
   background:
-    radial-gradient(1200px 600px at 50% -10%, #34245f 0%, transparent 60%),
-    radial-gradient(800px 500px at 90% 10%, #2a1c52 0%, transparent 55%),
+    radial-gradient(900px 520px at 18% -8%, #ff3d8b55 0%, transparent 58%),
+    radial-gradient(900px 520px at 88% 4%, #14d6ff55 0%, transparent 58%),
+    radial-gradient(1200px 700px at 50% 110%, #ffb01e44 0%, transparent 60%),
     linear-gradient(180deg,var(--bg-0),var(--bg-1));
   background-attachment:fixed;
   min-height:100dvh;display:flex;flex-direction:column;align-items:center;
@@ -46,11 +48,20 @@ body{
 .title{font-family:'Cinzel Decorative',serif;font-weight:900;font-size:16px;letter-spacing:.5px;line-height:1;
   background:linear-gradient(180deg,#fff,#cdbcff);-webkit-background-clip:text;background-clip:text;color:transparent}
 .title small{display:block;font-family:'Fredoka';font-weight:500;font-size:10.5px;letter-spacing:3px;color:var(--muted);margin-top:2px}
-.purse{display:flex;align-items:center;gap:6px;background:linear-gradient(180deg,var(--panel-2),var(--panel));
-  border:1px solid var(--line);border-radius:14px;padding:7px 11px;box-shadow:var(--shadow)}
-.purse .coin{font-size:16px;filter:drop-shadow(0 0 6px rgba(255,210,74,.6))}
-.purse b{font-size:15px;color:var(--gold);font-variant-numeric:tabular-nums}
-.purse span{font-size:9px;color:var(--muted);letter-spacing:1px;display:block;line-height:1}
+.purse{display:inline-flex;align-items:center;gap:6px;background:linear-gradient(180deg,var(--panel-2),var(--panel));
+  border:1px solid var(--line);border-radius:12px;padding:5px 11px;box-shadow:var(--shadow);white-space:nowrap;flex:none}
+.purse .coin{font-size:15px;filter:drop-shadow(0 0 6px rgba(255,210,74,.6));flex:none}
+.purse .plab{font-size:10px;color:var(--muted);letter-spacing:1px;flex:none}
+.purse b{font-size:18px;color:var(--gold);font-variant-numeric:tabular-nums;line-height:1;flex:none;
+  text-shadow:0 1px 2px rgba(0,0,0,.4)}
+.purse.earn b{color:var(--ok)}
+.purse.earn .coin{filter:drop-shadow(0 0 6px rgba(22,229,138,.6))}
+.sndbtn{background:linear-gradient(180deg,var(--panel-2),var(--panel));border:1px solid var(--line);
+  border-radius:12px;padding:7px 10px;font-size:16px;color:var(--text);box-shadow:var(--shadow);cursor:pointer;flex:none}
+/* группа справа в шапке: кошелёк + звук */
+.topright{display:flex;align-items:center;gap:7px;flex:none}
+.brand{min-width:0;flex:1;overflow:hidden}
+.title{overflow:hidden;text-overflow:ellipsis}
 
 /* ---------- stat strip ---------- */
 .strip{display:grid;grid-template-columns:1fr auto 1fr;gap:8px;align-items:center;
@@ -83,10 +94,10 @@ body{
 .tile{position:absolute;top:0;left:0;display:flex;align-items:center;justify-content:center;
   will-change:transform;transition:transform .3s cubic-bezier(.3,1.2,.5,1)}
 .gem{width:86%;height:86%;border-radius:26%;display:flex;align-items:center;justify-content:center;
-  font-size:0;position:relative;box-shadow:inset 0 -3px 6px rgba(0,0,0,.35),inset 0 3px 4px rgba(255,255,255,.35),0 3px 6px rgba(0,0,0,.3);
+  font-size:0;position:relative;box-shadow:inset 0 -5px 8px rgba(0,0,0,.4),inset 0 4px 6px rgba(255,255,255,.55),0 4px 9px rgba(0,0,0,.35);
   transition:transform .12s ease}
-.gem::after{content:"";position:absolute;top:12%;left:16%;width:34%;height:26%;border-radius:50%;
-  background:rgba(255,255,255,.55);filter:blur(1px)}
+.gem::after{content:"";position:absolute;top:10%;left:14%;width:38%;height:30%;border-radius:50%;
+  background:rgba(255,255,255,.75);filter:blur(1px)}
 .gem .sym{font-size:clamp(13px,5.4vw,22px);font-weight:700;color:rgba(255,255,255,.92);
   text-shadow:0 1px 2px rgba(0,0,0,.4);z-index:1}
 .tile.sel .gem{transform:scale(1.12);box-shadow:0 0 0 3px var(--gold),0 0 14px var(--gold)}
@@ -94,12 +105,26 @@ body{
 .tile.hit .gem{animation:hit .22s ease}
 @keyframes hit{50%{transform:scale(1.15)}}
 
-.g0{background:radial-gradient(circle at 35% 25%,#d6aaff,var(--g-amethyst))}
-.g1{background:radial-gradient(circle at 35% 25%,#88f0c4,var(--g-emerald))}
-.g2{background:radial-gradient(circle at 35% 25%,#ffe79a,var(--g-citrine))}
-.g3{background:radial-gradient(circle at 35% 25%,#ff9aa9,var(--g-ruby))}
-.g4{background:radial-gradient(circle at 35% 25%,#9fd0ff,var(--g-sapphire))}
-.g5{background:radial-gradient(circle at 35% 25%,#ffc28a,var(--g-topaz))}
+.g0{background:radial-gradient(circle at 34% 24%,#f0d4ff 0%,var(--g-amethyst) 55%,#7d23c9 100%)}
+.g1{background:radial-gradient(circle at 34% 24%,#b6ffe0 0%,var(--g-emerald) 55%,#06a862 100%)}
+.g2{background:radial-gradient(circle at 34% 24%,#fff3bd 0%,var(--g-citrine) 55%,#d39a00 100%)}
+.g3{background:radial-gradient(circle at 34% 24%,#ffc0d0 0%,var(--g-ruby) 55%,#cc1745 100%)}
+.g4{background:radial-gradient(circle at 34% 24%,#c4e6ff 0%,var(--g-sapphire) 55%,#0a6dc9 100%)}
+.g5{background:radial-gradient(circle at 34% 24%,#ffd9b0 0%,var(--g-topaz) 55%,#d65f00 100%)}
+
+/* ---------- FX: вспышки, монеты, тряска ---------- */
+#fx{position:fixed;inset:0;pointer-events:none;z-index:60;overflow:hidden}
+.spark{position:fixed;width:11px;height:11px;border-radius:50%;will-change:transform,opacity;
+  box-shadow:0 0 8px currentColor}
+@keyframes sparkfly{to{transform:translate(var(--dx),var(--dy)) scale(.2);opacity:0}}
+.coin{position:fixed;font-size:26px;will-change:transform,opacity;z-index:60}
+@keyframes coinfall{0%{opacity:1}100%{transform:translateY(112vh) rotate(560deg);opacity:1}}
+.fxflash{position:fixed;inset:0;pointer-events:none;z-index:59;
+  background:radial-gradient(circle at 50% 45%,rgba(255,255,255,.85),transparent 60%);opacity:0;animation:fxflash .38s ease}
+@keyframes fxflash{0%{opacity:.85}100%{opacity:0}}
+.shake{animation:shk .3s ease}
+@keyframes shk{0%,100%{transform:translate(0,0)}20%{transform:translate(-6px,3px)}
+  40%{transform:translate(5px,-4px)}60%{transform:translate(-4px,2px)}80%{transform:translate(4px,-2px)}}
 
 .float{position:absolute;z-index:5;pointer-events:none;font-weight:700;font-size:18px;color:var(--gold);
   text-shadow:0 2px 6px rgba(0,0,0,.6);animation:floatup 1s ease forwards}
@@ -113,6 +138,47 @@ body{
 
 /* ---------- boosters ---------- */
 .boosters{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.adbonus{width:100%;margin-top:8px;font-size:13px;padding:9px}
+.shopbar{display:flex;align-items:center;justify-content:space-between;gap:8px;margin:6px 0 8px}
+.coins{display:inline-flex;align-items:center;gap:6px;background:linear-gradient(180deg,var(--panel-2),var(--panel));
+  border:1px solid var(--line);border-radius:12px;padding:6px 12px;box-shadow:var(--shadow)}
+.coins .cc{font-size:15px}
+.coins b{font-size:16px;color:#ffd23a;font-variant-numeric:tabular-nums}
+.coins .cl{font-size:10px;color:var(--muted);letter-spacing:1px}
+.shopbtn{padding:8px 14px;font-size:13px}
+.sbtns{display:flex;gap:6px}
+.map-card{max-width:420px;width:92%}
+.map-list{max-height:50vh;overflow-y:auto;display:flex;flex-direction:column;gap:8px;margin:10px 0;padding:2px}
+.mnode{display:flex;align-items:center;justify-content:space-between;gap:10px;
+  background:#150f2c;border:1px solid var(--line);border-radius:14px;padding:11px 16px;
+  color:var(--text);font-family:inherit;font-weight:700;font-size:15px;cursor:pointer}
+.mnode:active{transform:scale(.98)}
+.mnode .ml{display:flex;align-items:center;gap:10px}
+.mnode .mn{width:34px;height:34px;border-radius:50%;display:flex;align-items:center;justify-content:center;
+  background:linear-gradient(180deg,#3a2a7a,#241a52);border:1px solid var(--line);font-size:14px}
+.mnode.cur{border-color:var(--gold);box-shadow:0 0 12px rgba(255,210,74,.4)}
+.mnode.cur .mn{background:linear-gradient(180deg,var(--gold),var(--gold-2));color:#3a2400}
+.mnode.locked{opacity:.5;cursor:not-allowed}
+.mnode .mstars{font-size:13px;letter-spacing:1px;color:var(--gold)}
+.mnode.done{border-color:rgba(22,229,138,.35)}
+.shop-coins{font-size:16px;color:#ffd23a;margin:8px 0}
+.shop-list{display:flex;flex-direction:column;gap:8px;margin:10px 0}
+.shop-item{display:flex;align-items:center;justify-content:space-between;width:100%;
+  background:#150f2c;border:1px solid var(--line);border-radius:12px;padding:11px 14px;color:var(--text);
+  font-family:inherit;font-weight:600;font-size:15px;cursor:pointer}
+.shop-item:active{transform:scale(.98)}
+.shop-item .price{color:#ffd23a;font-size:14px}
+.livesbar{display:flex;align-items:center;justify-content:center;gap:10px;margin-top:8px}
+.livesbar .hearts{font-size:15px;letter-spacing:2px}
+.livesbar .ltimer{font-size:11px;color:var(--muted)}
+.dailybtn.ready{animation:dailypulse 1.3s ease-in-out infinite;box-shadow:0 0 0 0 rgba(255,210,74,.6)}
+@keyframes dailypulse{0%{box-shadow:0 0 0 0 rgba(255,210,74,.55)}70%{box-shadow:0 0 0 10px rgba(255,210,74,0)}100%{box-shadow:0 0 0 0 rgba(255,210,74,0)}}
+.daily-row{display:grid;grid-template-columns:repeat(7,1fr);gap:5px;margin:12px 0}
+.dcell{background:#150f2c;border:1px solid var(--line);border-radius:10px;padding:6px 2px;text-align:center}
+.dcell .dd{font-size:10px;color:var(--muted)}
+.dcell .dr{font-size:13px;margin-top:2px;line-height:1.1}
+.dcell.cur{border-color:var(--gold);box-shadow:0 0 10px rgba(255,210,74,.4);background:#241a06}
+.dcell.done{opacity:.45}
 .bst{display:flex;flex-direction:column;align-items:center;gap:2px;cursor:pointer;
   background:linear-gradient(180deg,var(--panel-2),var(--panel));border:1px solid var(--line);
   border-radius:14px;padding:8px 4px;box-shadow:var(--shadow);transition:transform .12s,border-color .15s;position:relative}
@@ -138,6 +204,9 @@ body{
 .btn[disabled]{opacity:.45;pointer-events:none;filter:grayscale(.4)}
 .btn.ghost{background:transparent;color:var(--text);border:1px solid var(--line);box-shadow:none}
 .btn.ghost:active{transform:scale(.97)}
+.btn.claim-big{width:100%;margin:10px 0 4px;background:linear-gradient(180deg,var(--gold),var(--gold-2));
+  color:#3a2400;font-size:16px;padding:13px;box-shadow:0 6px 18px rgba(255,176,30,.45)}
+.btn.claim-big:active{transform:scale(.98)}
 
 /* ---------- overlays ---------- */
 .overlay{position:fixed;inset:0;z-index:30;display:none;align-items:center;justify-content:center;
@@ -174,9 +243,17 @@ body{
       <div class="wiz" id="wiz">🧙</div>
       <div class="title">CITYEMPIRE<small>МАТЧ · АРКАНА</small></div>
     </div>
-    <div class="purse">
-      <span class="coin">🪙</span>
-      <div><span>CITY КОШЕЛЁК</span><b id="purse">0</b></div>
+    <div class="topright">
+      <div class="purse" title="Общий баланс CITY">
+        <span class="coin">🪙</span>
+        <b id="purse">0</b>
+      </div>
+      <div class="purse earn" title="Заработано за эту игру">
+        <span class="coin">✨</span>
+        <b id="earn">0</b>
+      </div>
+      <button class="sndbtn dailybtn" id="dailybtn">🎁</button>
+      <button class="sndbtn" id="sndbtn">🔊</button>
     </div>
   </div>
 
@@ -191,9 +268,22 @@ body{
     </div>
   </div>
 
+  <div class="livesbar" id="livesbar">
+    <span class="hearts" id="hearts">❤️❤️❤️❤️❤️</span>
+    <span class="ltimer" id="ltimer"></span>
+  </div>
+
   <div class="board-wrap" id="bw">
     <div class="board" id="board"></div>
     <div class="combo" id="combo"></div>
+  </div>
+
+  <div class="shopbar">
+    <div class="coins"><span class="cc">🟡</span><b id="coins">0</b><span class="cl">монет</span></div>
+    <div class="sbtns">
+      <button class="btn ghost shopbtn" id="mapbtn">🗺 Карта</button>
+      <button class="btn ghost shopbtn" id="shopbtn">🛒 Магазин</button>
+    </div>
   </div>
 
   <div class="boosters">
@@ -201,6 +291,8 @@ body{
     <div class="bst" id="bst-bomb" data-b="bomb"><div class="cnt">1</div><div class="ic">💣</div><div class="nm">Бомба</div></div>
     <div class="bst" id="bst-shuffle" data-b="shuffle"><div class="cnt">1</div><div class="ic">🔀</div><div class="nm">Перемешать</div></div>
   </div>
+
+  <button class="btn ghost adbonus" id="ad-bonus">📺 +1 бустер за рекламу</button>
 
   <div class="claimbar">
     <div class="info"><div class="t">ЗАРАБОТАНО CITY</div><div class="v" id="claimval">0</div></div>
@@ -214,7 +306,8 @@ body{
     <div class="em">🏆</div>
     <h2>Уровень пройден!</h2>
     <div class="bigstars" id="win-stars">⭐⭐⭐</div>
-    <div class="reward">🪙 <span id="win-reward">0</span> CITY · заберёшь в боте</div>
+    <div class="reward">🟡 <span id="win-coins">0</span> монет<span id="win-city-wrap" style="display:none"> · 🪙 <span id="win-reward">0</span> CITY</span></div>
+    <button class="btn claim-big" id="win-claim">💰 Забрать CITY в бота</button>
     <div class="row">
       <button class="btn ghost" id="win-replay">Заново</button>
       <button class="btn" id="win-next">Дальше →</button>
@@ -228,7 +321,70 @@ body{
     <div class="em">🪄</div>
     <h2>Ходы кончились</h2>
     <p>Магии не хватило, чтобы достичь цели. Пройди уровень — и CITY заберёшь в боте!</p>
-    <div class="row"><button class="btn" id="lose-replay" style="flex:1">Ещё раз</button></div>
+    <button class="btn claim-big" id="lose-revive">📺 Продолжить (+5 ходов)</button>
+    <div class="row"><button class="btn ghost" id="lose-replay" style="flex:1">Ещё раз</button></div>
+  </div>
+</div>
+
+<!-- HARD LEVEL BOOST -->
+<div class="overlay" id="ov-boost">
+  <div class="card">
+    <div class="em">🔥</div>
+    <h2>Сложный уровень!</h2>
+    <p>Хочешь начать с запасом? Посмотри короткую рекламу и получи +5 ходов.</p>
+    <button class="btn claim-big" id="boost-yes">📺 +5 ходов</button>
+    <div class="row"><button class="btn ghost" id="boost-no" style="flex:1">Начать без бонуса</button></div>
+  </div>
+</div>
+
+<!-- LEVEL MAP -->
+<div class="overlay" id="ov-map">
+  <div class="card map-card">
+    <div class="em">🗺</div>
+    <h2>Карта уровней</h2>
+    <p>Жми доступный уровень, чтобы играть. Звёзды — за лучшее прохождение.</p>
+    <div class="map-list" id="map-list"></div>
+    <div class="row"><button class="btn ghost" id="map-close" style="flex:1">Закрыть</button></div>
+  </div>
+</div>
+
+<!-- SHOP -->
+<div class="overlay" id="ov-shop">
+  <div class="card">
+    <div class="em">🛒</div>
+    <h2>Магазин</h2>
+    <p>Трать монеты на бустеры и жизни. Монеты — за пройденные уровни.</p>
+    <div class="shop-coins">🟡 <b id="shop-coins">0</b> монет</div>
+    <div class="shop-list">
+      <button class="shop-item" data-buy="hammer"><span>🔨 Молот</span><span class="price">🟡 80</span></button>
+      <button class="shop-item" data-buy="bomb"><span>💣 Бомба</span><span class="price">🟡 120</span></button>
+      <button class="shop-item" data-buy="shuffle"><span>🔀 Перемешать</span><span class="price">🟡 100</span></button>
+      <button class="shop-item" data-buy="life"><span>❤️ +1 жизнь</span><span class="price">🟡 150</span></button>
+    </div>
+    <div class="row"><button class="btn ghost" id="shop-close" style="flex:1">Закрыть</button></div>
+  </div>
+</div>
+
+<!-- NO LIVES -->
+<div class="overlay" id="ov-nolives">
+  <div class="card">
+    <div class="em">💔</div>
+    <h2>Жизни закончились</h2>
+    <p>Получи жизнь за рекламу или подожди восстановления.</p>
+    <button class="btn claim-big" id="nolives-ad">📺 +1 жизнь</button>
+    <div class="row"><button class="btn ghost" id="nolives-wait" style="flex:1" disabled>⏳ +1 через <span id="nolives-timer">--:--</span></button></div>
+  </div>
+</div>
+
+<!-- DAILY REWARD -->
+<div class="overlay" id="ov-daily">
+  <div class="card">
+    <div class="em">🎁</div>
+    <h2>Ежедневная награда</h2>
+    <p id="daily-sub">Заходи каждый день — награда растёт!</p>
+    <div class="daily-row" id="daily-row"></div>
+    <button class="btn claim-big" id="daily-claim">Забрать</button>
+    <div class="row"><button class="btn ghost" id="daily-close" style="flex:1">Позже</button></div>
   </div>
 </div>
 
@@ -291,14 +447,15 @@ const sleep = ms=>new Promise(r=>setTimeout(r,ms));
 const rngGem = ()=>Math.floor(Math.random()*TYPES);
 
 /* ================= State ================= */
-let LEVEL=1, BEST=0, CLAIMED=0;       // BEST = высший пройденный, CLAIMED = уже отправлен боту
+let LEVEL=1, BEST=0, CLAIMED=0, SRV_BAL=0;   // SRV_BAL = общий баланс CITY из бота
 let score=0, target=0, movesLeft=0;
 let grid=[];                          // grid[r][c] = {type, r, c, el} | null
 let isBusy=false, pending=null, armed=null;
 let tile=0;                           // px size of a cell
 
 /* CITY за первое прохождение уровня — формула совпадает с ботом (он считает по-настоящему) */
-function levelReward(L){ return 100 + L*40; }
+function levelReward(L){ return (L % 5 === 0) ? (200 + L*30) : 0; } // CITY — премиум: только каждый 5-й уровень
+function levelCoins(L,st){ return 40 + L*8 + (st||0)*25; }          // Монеты — за каждый уровень
 function estimateCity(){ let s=0; for(let L=CLAIMED+1; L<=BEST; L++) s+=levelReward(L); return s; }
 
 const $ = id=>document.getElementById(id);
@@ -361,6 +518,38 @@ function findMatches(){
   return m;
 }
 
+/* Спец-фишки: 4 в ряд → ракета (чистит линию), 5+ → радуга (чистит весь цвет) */
+function findMatchesEx(){
+  const cells=new Set(); const blasts=[];
+  // горизонтали
+  for(let r=0;r<N;r++){ let run=1; for(let c=1;c<=N;c++){
+    const a=c<N?grid[r][c]:null, b=grid[r][c-1];
+    if(c<N && a && b && a.type===b.type) run++;
+    else { if(run>=3){ const start=c-run, color=grid[r][start]?grid[r][start].type:null;
+        for(let k=start;k<c;k++) cells.add(r+','+k);
+        if(run>=5) blasts.push({kind:'color',type:color});
+        else if(run===4) blasts.push({kind:'row',r:r}); }
+      run=1; }
+  }}
+  // вертикали
+  for(let c=0;c<N;c++){ let run=1; for(let r=1;r<=N;r++){
+    const a=r<N?grid[r][c]:null, b=grid[r-1][c];
+    if(r<N && a && b && a.type===b.type) run++;
+    else { if(run>=3){ const start=r-run, color=(grid[start]&&grid[start][c])?grid[start][c].type:null;
+        for(let k=start;k<r;k++) cells.add(k+','+c);
+        if(run>=5) blasts.push({kind:'color',type:color});
+        else if(run===4) blasts.push({kind:'col',c:c}); }
+      run=1; }
+  }}
+  // применяем взрывы — расширяем набор клеток
+  for(const bl of blasts){
+    if(bl.kind==='row'){ for(let c=0;c<N;c++) if(grid[bl.r][c]) cells.add(bl.r+','+c); }
+    else if(bl.kind==='col'){ for(let r=0;r<N;r++) if(grid[r][bl.c]) cells.add(r+','+bl.c); }
+    else if(bl.kind==='color' && bl.type!=null){ for(let r=0;r<N;r++)for(let c=0;c<N;c++) if(grid[r][c]&&grid[r][c].type===bl.type) cells.add(r+','+c); }
+  }
+  return {cells, blasts};
+}
+
 function hasPossibleMove(){
   const t=(r,c)=>grid[r][c]?grid[r][c].type:-1;
   const wouldMatch=(r,c)=>{
@@ -414,6 +603,97 @@ function applyGravity(){
 }
 
 /* ================= Resolve loop ================= */
+/* ================= Реклама с вознаграждением (ДОХОД ВЛАДЕЛЬЦА) =================
+   Зарегистрируйся на https://adsgram.ai → добавь свой Mini App → получи Block ID
+   и впиши его ниже (например "int-1234"). Пока пусто — реклама не показывается,
+   а бонус выдаётся для теста. После вставки ID за каждый показ ты получаешь деньги. */
+const ADSGRAM_BLOCK_ID = "36520"; // <-- ВСТАВЬ СВОЙ BLOCK ID
+const ADSGRAM_INTERSTITIAL_ID = "int-36521"; // пропускаемая реклама между уровнями
+const NOADS = new URLSearchParams(location.search).get('noads')==='1'; // VIP/без рекламы — бот передаёт
+let adController=null, adInterstitial=null;
+function getAdController(){
+  if(adController) return adController;
+  try{ if(window.Adsgram && ADSGRAM_BLOCK_ID){ adController=window.Adsgram.init({blockId:ADSGRAM_BLOCK_ID}); } }catch(e){}
+  return adController;
+}
+function getInterstitialController(){
+  if(adInterstitial) return adInterstitial;
+  try{ if(window.Adsgram && ADSGRAM_INTERSTITIAL_ID){ adInterstitial=window.Adsgram.init({blockId:ADSGRAM_INTERSTITIAL_ID}); } }catch(e){}
+  return adInterstitial;
+}
+function showRewardedAd(onReward){
+  const ctl=getAdController();
+  if(ctl){
+    ctl.show().then(()=>onReward()).catch(()=>toast('Реклама недоступна, попробуй позже'));
+  } else {
+    onReward(); // Block ID ещё не вставлен — выдаём бонус для теста
+  }
+}
+function showInterstitial(onDone){
+  // межуровневая реклама (пропускаемая): продолжаем игру в любом случае
+  if(NOADS){ onDone(); return; }   // у игрока куплено «без рекламы» / VIP
+  const ctl=getInterstitialController() || getAdController();
+  if(ctl){ ctl.show().then(()=>onDone()).catch(()=>onDone()); }
+  else { onDone(); }
+}
+
+/* ================= Звук (синтез, без файлов) ================= */
+let AC=null, MUTED=false;
+function initAudio(){ if(AC) return; try{ AC=new (window.AudioContext||window.webkitAudioContext)(); }catch(e){} }
+function beep(freq,dur,type,vol){
+  if(!AC||MUTED) return;
+  try{
+    const o=AC.createOscillator(), g=AC.createGain();
+    o.type=type||'sine'; o.frequency.value=freq;
+    o.connect(g); g.connect(AC.destination);
+    const t=AC.currentTime;
+    g.gain.setValueAtTime(vol||.14, t);
+    g.gain.exponentialRampToValueAtTime(0.0001, t+(dur||.14));
+    o.start(t); o.stop(t+(dur||.14));
+  }catch(e){}
+}
+function sfxSwap(){ initAudio(); beep(320,.07,'sine',.10); }
+function sfxMatch(cascade){ initAudio(); beep(420+(Math.min(cascade,6))*90,.12,'triangle',.15); }
+function sfxWin(){ initAudio(); [523,659,784,1047].forEach((f,i)=>setTimeout(()=>beep(f,.20,'triangle',.16),i*110)); }
+function sfxCoin(){ initAudio(); beep(900+Math.random()*200,.05,'square',.07); }
+function sfxBad(){ initAudio(); beep(170,.28,'sawtooth',.12); }
+// разблокировка звука и mute-кнопка
+document.addEventListener('pointerdown',()=>{ initAudio(); if(AC&&AC.state==='suspended'){ try{AC.resume();}catch(e){} } });
+(function(){ const b=document.getElementById('sndbtn'); if(b){ b.onclick=()=>{ MUTED=!MUTED; b.textContent=MUTED?'🔇':'🔊';
+  initAudio(); if(!MUTED&&AC&&AC.state==='suspended'){ try{AC.resume();}catch(e){} } }; } })();
+
+/* ================= FX (оригинальные эффекты) ================= */
+const fxLayer=document.createElement('div'); fxLayer.id='fx'; document.body.appendChild(fxLayer);
+const GEM_FX=['#c44dff','#16e58a','#ffd21a','#ff3666','#1f9bff','#ff871e'];
+function burstAt(el,color){
+  if(!el) return;
+  const r=el.getBoundingClientRect();
+  const cx=r.left+r.width/2, cy=r.top+r.height/2;
+  for(let i=0;i<9;i++){
+    const s=document.createElement('div'); s.className='spark';
+    const ang=Math.random()*Math.PI*2, dist=26+Math.random()*44;
+    s.style.left=cx+'px'; s.style.top=cy+'px';
+    s.style.color=color; s.style.background=color;
+    s.style.setProperty('--dx',(Math.cos(ang)*dist)+'px');
+    s.style.setProperty('--dy',(Math.sin(ang)*dist)+'px');
+    s.style.animation='sparkfly .5s ease-out forwards';
+    fxLayer.appendChild(s); setTimeout(()=>s.remove(),520);
+  }
+}
+function screenShake(){ if(!boardEl) return; boardEl.classList.remove('shake'); void boardEl.offsetWidth; boardEl.classList.add('shake'); setTimeout(()=>boardEl.classList.remove('shake'),300); }
+function fxFlash(){ const f=document.createElement('div'); f.className='fxflash'; document.body.appendChild(f); setTimeout(()=>f.remove(),380); }
+function coinRain(n){
+  for(let i=0;i<n;i++){
+    setTimeout(()=>{
+      const c=document.createElement('div'); c.className='coin'; c.textContent='🪙';
+      c.style.left=(Math.random()*100)+'vw'; c.style.top='-40px';
+      const dur=1.2+Math.random()*1.3; c.style.animation=`coinfall ${dur}s linear forwards`;
+      fxLayer.appendChild(c); setTimeout(()=>c.remove(),dur*1000+120);
+      if(i%4===0) sfxCoin();
+    }, i*55);
+  }
+}
+
 function spawnFloat(text, r, c){
   const f=document.createElement('div'); f.className='float'; f.textContent=text;
   f.style.left=(c*tile + tile*0.1)+'px'; f.style.top=(r*tile)+'px';
@@ -428,10 +708,12 @@ async function resolve(){
   isBusy=true;
   let cascade=0;
   while(true){
-    const matches=findMatches();
+    const res=findMatchesEx();
+    const matches=res.cells;
     if(matches.size===0) break;
     cascade++;
-    const mult=1+0.5*(cascade-1);
+    const hasBlast=res.blasts.length>0;
+    const mult=(1+0.5*(cascade-1))*(hasBlast?1.5:1);
     const gained=Math.round(matches.size*50*mult);
     score+=gained;
     if(cascade>=2){ showCombo(cascade); castWizard(); }
@@ -439,11 +721,20 @@ async function resolve(){
     matches.forEach(k=>{ const [r,c]=k.split(',').map(Number); const t=grid[r][c];
       if(t){ t.el.classList.add('pop'); fr+=r; fc+=c; cnt++; } });
     haptic(cascade>=3?'medium':'light');
+    sfxMatch(cascade);
     if(cnt) spawnFloat('+'+gained, Math.round(fr/cnt), Math.round(fc/cnt));
+    if(matches.size>=4 || cascade>=2) screenShake();
+    if(cascade>=3) fxFlash();
+    // эффекты спец-фишек
+    if(hasBlast){
+      screenShake(); fxFlash(); sfxWin();
+      const hasColor=res.blasts.some(b=>b.kind==='color');
+      toast(hasColor?'🌈 РАДУГА! Весь цвет уничтожен':'🚀 РАКЕТА! Линия очищена');
+    }
     updateHUD();
     await sleep(230);
     matches.forEach(k=>{ const [r,c]=k.split(',').map(Number); const t=grid[r][c];
-      if(t){ t.el.remove(); grid[r][c]=null; } });
+      if(t){ burstAt(t.el, GEM_FX[t.type]||'#fff'); t.el.remove(); grid[r][c]=null; } });
     applyGravity();
     await sleep(340);
   }
@@ -460,11 +751,12 @@ function swapModel(a,b){
 async function trySwap(a,b){
   if(isBusy) return; isBusy=true;
   clearSel();
+  sfxSwap();
   swapModel(a,b); place(a); place(b);
   await sleep(300);
   if(findMatches().size===0){
     swapModel(a,b); place(a); place(b); // revert
-    haptic('warning');
+    haptic('warning'); sfxBad();
     await sleep(300); isBusy=false; return;
   }
   movesLeft--; updateHUD();
@@ -564,7 +856,8 @@ function updateHUD(){
   $('moves').textContent=movesLeft;
   $('lvl').textContent=LEVEL;
   const est=estimateCity();
-  $('purse').textContent=fmt(est);
+  $('purse').textContent=fmt(SRV_BAL + est);
+  const eEl=$('earn'); if(eEl) eEl.textContent='+'+fmt(est);
   const pct=Math.min(100, target? score/target*100 : 0);
   $('goalbar').style.width=pct+'%';
   $('ministars').textContent=starStr(starsFor(score));
@@ -587,6 +880,7 @@ function refreshMainButton(){
 
 /* ================= Levels ================= */
 function startLevel(lv){
+  if(typeof LIVES!=='undefined' && LIVES.n<=0){ renderLives(); show('ov-nolives'); return; }
   LEVEL=lv;
   target = 1500 + (lv-1)*900;
   movesLeft = 20;
@@ -595,32 +889,91 @@ function startLevel(lv){
   renderBoosters();
   buildGrid();
   updateHUD();
+  if(typeof renderLives==='function') renderLives();
   save();
+  // перед сложным уровнем (каждый 5-й) — предложить рекламу за +5 ходов
+  if(lv % 5 === 0){ show('ov-boost'); }
 }
 
 function win(){
   const stars=Math.max(1,starsFor(score));
   const wasNew = LEVEL>BEST;
   if(wasNew){ BEST=LEVEL; }
+  recordStars(LEVEL, stars);
   save();
   haptic('success');
+  coinRain(26); fxFlash(); screenShake(); sfxWin();
   $('win-stars').textContent=starStr(stars);
-  $('win-reward').textContent = wasNew ? '+'+fmt(levelReward(LEVEL)) : '0';
+  // монеты — за каждый уровень
+  const coinsGain = levelCoins(LEVEL, stars);
+  addCoins(coinsGain);
+  $('win-coins').textContent = '+'+fmt(coinsGain);
+  // CITY — только премиум-уровни (каждый 5-й)
+  const cityGain = wasNew ? levelReward(LEVEL) : 0;
+  const cw=$('win-city-wrap');
+  if(cityGain>0){ $('win-reward').textContent='+'+fmt(cityGain); if(cw) cw.style.display='inline'; }
+  else { if(cw) cw.style.display='none'; }
   updateHUD();
   show('ov-win');
 }
 function lose(){
-  haptic('error');
+  haptic('error'); sfxBad();
+  loseLife();
   updateHUD();
-  show('ov-lose');
+  if(LIVES.n<=0){ renderLives(); show('ov-nolives'); }
+  else { renderLives(); show('ov-lose'); }
 }
 
 /* ================= Overlays ================= */
 function show(id){ $(id).classList.add('show'); }
 function hide(id){ $(id).classList.remove('show'); }
-$('win-next').onclick   =()=>{ hide('ov-win'); startLevel(LEVEL+1); };
+$('win-next').onclick   =()=>{
+  hide('ov-win');
+  // напоминание забрать CITY, если накопилось за несколько уровней без Claim
+  const unclaimed = BEST - CLAIMED;
+  if(unclaimed >= 3){
+    toast('💰 Не забудь забрать '+fmt(estimateCity())+' CITY — кнопка в окне победы!');
+  }
+  const next = LEVEL+1;
+  // межуровневая реклама каждые 3 уровня (доход владельца)
+  if(LEVEL % 3 === 0){ showInterstitial(()=>startLevel(next)); }
+  else { startLevel(next); }
+};
 $('win-replay').onclick =()=>{ hide('ov-win'); startLevel(LEVEL); };
 $('lose-replay').onclick=()=>{ hide('ov-lose'); startLevel(LEVEL); };
+(function(){ const rb=$('lose-revive'); if(rb) rb.onclick=()=>{
+  showRewardedAd(()=>{
+    hide('ov-lose');
+    addLife(1);                 // воскрешение — уровень продолжается, жизнь возвращаем
+    movesLeft += 5; updateHUD(); renderLives();
+    isBusy=false; haptic('success'); sfxCoin();
+    toast('+5 ходов! Продолжай 💪');
+  });
+}; })();
+
+// Жизнь за рекламу из окна «нет жизней»
+(function(){ const na=$('nolives-ad'); if(na) na.onclick=()=>{
+  showRewardedAd(()=>{
+    addLife(1); hide('ov-nolives'); renderLives();
+    haptic('success'); sfxCoin(); toast('❤️ +1 жизнь!');
+    startLevel(LEVEL);
+  });
+}; })();
+
+// Место 2: реклама за +5 ходов перед сложным уровнем
+(function(){
+  const y=$('boost-yes'), n=$('boost-no');
+  if(y) y.onclick=()=>{ showRewardedAd(()=>{ movesLeft += 5; updateHUD(); hide('ov-boost'); sfxCoin(); haptic('success'); toast('🔥 +5 ходов!'); }); };
+  if(n) n.onclick=()=>hide('ov-boost');
+})();
+
+// Место 3: реклама за +1 бустер
+(function(){ const ab=$('ad-bonus'); if(ab) ab.onclick=()=>{
+  showRewardedAd(()=>{
+    boosters.hammer += 1; renderBoosters(); haptic('success'); sfxCoin();
+    toast('🔨 +1 Молот!');
+  });
+}; })();
 
 /* ---- claim ---- */
 function openClaim(){
@@ -631,18 +984,20 @@ function openClaim(){
 }
 $('claimbtn').onclick=openClaim;
 $('claim-cancel').onclick=()=>hide('ov-claim');
-$('claim-confirm').onclick=()=>{
+function claimToBot(){
   const est=estimateCity();
-  if(est<=0){ hide('ov-claim'); return; }
+  if(est<=0){ hide('ov-claim'); hide('ov-win'); toast('Пока нечего забирать'); return; }
   if(tg && tg.sendData){
     CLAIMED=BEST; save();
     tgSafe(()=>tg.sendData(JSON.stringify({action:'claim', level:BEST})));
-    // Telegram закроет окно; CITY начислит бот
+    // Telegram закроет окно; CITY начислит бот (баланс в безопасности до вывода)
   } else {
-    hide('ov-claim');
+    hide('ov-claim'); hide('ov-win');
     toast('Открой игру внутри Telegram, чтобы забрать CITY');
   }
-};
+}
+$('claim-confirm').onclick=claimToBot;
+const winClaimBtn=$('win-claim'); if(winClaimBtn) winClaimBtn.onclick=claimToBot;
 
 /* ================= Toast ================= */
 let toastT=null;
@@ -654,17 +1009,153 @@ let rsT=null;
 window.addEventListener('resize',()=>{ clearTimeout(rsT); rsT=setTimeout(()=>{ computeTile(); positionAll(false); },120); });
 
 /* ================= Boot ================= */
+/* ================= Карта уровней + звёзды ================= */
+const STARS_KEY='ce_stars_'+USER_ID;
+function loadStars(){ try{ return JSON.parse(localStorage.getItem(STARS_KEY))||{}; }catch(e){ return {}; } }
+let STARS=loadStars();
+function saveStars(){ try{ localStorage.setItem(STARS_KEY, JSON.stringify(STARS)); }catch(e){} }
+function recordStars(lv,st){ if(!STARS[lv] || st>STARS[lv]){ STARS[lv]=st; saveStars(); } }
+function renderMap(){
+  const list=$('map-list'); if(!list) return; list.innerHTML='';
+  const maxShown=Math.max(BEST+3, 12);
+  for(let lv=1; lv<=maxShown; lv++){
+    const unlocked = lv<=BEST+1;       // играбельны уровни до следующего непройденного
+    const st=STARS[lv]||0;
+    const node=document.createElement('button');
+    node.className='mnode'+(lv===LEVEL?' cur':'')+(lv<=BEST?' done':'')+(unlocked?'':' locked');
+    const stars = st>0 ? '⭐'.repeat(st)+'☆'.repeat(3-st) : (unlocked? '☆☆☆':'🔒');
+    node.innerHTML='<div class="ml"><div class="mn">'+(unlocked?lv:'🔒')+'</div><div>Уровень '+lv+'</div></div><div class="mstars">'+stars+'</div>';
+    if(unlocked){ node.onclick=()=>{ hide('ov-map'); startLevel(lv); }; }
+    else { node.disabled=true; }
+    list.appendChild(node);
+  }
+  // прокрутить к текущему
+  setTimeout(()=>{ const cur=list.querySelector('.mnode.cur'); if(cur) cur.scrollIntoView({block:'center'}); },30);
+}
+function openMap(){ renderMap(); show('ov-map'); }
+(function(){
+  const mb=$('mapbtn'), mc=$('map-close');
+  if(mb) mb.onclick=openMap;
+  if(mc) mc.onclick=()=>hide('ov-map');
+})();
+
+/* ================= Монеты (внутриигровая валюта) ================= */
+const COINS_KEY='ce_coins_'+USER_ID;
+function loadCoins(){ try{ const v=parseInt(localStorage.getItem(COINS_KEY)); return isNaN(v)?0:v; }catch(e){ return 0; } }
+let COINS=loadCoins();
+function saveCoins(){ try{ localStorage.setItem(COINS_KEY, String(COINS)); }catch(e){} }
+function renderCoins(){ const a=$('coins'), b=$('shop-coins'); if(a)a.textContent=fmt(COINS); if(b)b.textContent=fmt(COINS); }
+function addCoins(n){ COINS=Math.max(0,COINS+n); saveCoins(); renderCoins(); }
+const SHOP_PRICES={hammer:80,bomb:120,shuffle:100,life:150};
+const SHOP_NAMES={hammer:'Молот',bomb:'Бомба',shuffle:'Перемешать',life:'жизнь'};
+function buyItem(kind){
+  const price=SHOP_PRICES[kind]; if(!price) return;
+  if(COINS<price){ toast('Не хватает монет — пройди ещё уровни!'); return; }
+  COINS-=price; saveCoins(); renderCoins();
+  if(kind==='life'){ addLife(1); renderLives(); toast('❤️ +1 жизнь!'); }
+  else { boosters[kind]=(boosters[kind]||0)+1; renderBoosters(); toast('Куплено: +1 '+SHOP_NAMES[kind]); }
+  sfxCoin(); haptic('success');
+}
+(function(){
+  const sb=$('shopbtn'), sc=$('shop-close');
+  if(sb) sb.onclick=()=>{ renderCoins(); show('ov-shop'); };
+  if(sc) sc.onclick=()=>hide('ov-shop');
+  document.querySelectorAll('.shop-item').forEach(el=>{ el.onclick=()=>buyItem(el.getAttribute('data-buy')); });
+})();
+
+/* ================= Жизни / энергия ================= */
+const LIVES_KEY='ce_lives_'+USER_ID;
+const MAX_LIVES=5, REGEN_MS=20*60*1000;   // +1 жизнь каждые 20 минут
+function loadLives(){ try{ const o=JSON.parse(localStorage.getItem(LIVES_KEY)); if(o&&typeof o.n==='number') return o; }catch(e){} return {n:MAX_LIVES, ts:Date.now()}; }
+function saveLives(){ try{ localStorage.setItem(LIVES_KEY, JSON.stringify(LIVES)); }catch(e){} }
+let LIVES=loadLives();
+function regenLives(){
+  if(LIVES.n>=MAX_LIVES){ LIVES.ts=Date.now(); return; }
+  const gained=Math.floor((Date.now()-LIVES.ts)/REGEN_MS);
+  if(gained>0){ LIVES.n=Math.min(MAX_LIVES, LIVES.n+gained); LIVES.ts=(LIVES.n>=MAX_LIVES)?Date.now():LIVES.ts+gained*REGEN_MS; saveLives(); }
+}
+function loseLife(){ if(LIVES.n>=MAX_LIVES) LIVES.ts=Date.now(); LIVES.n=Math.max(0,LIVES.n-1); saveLives(); }
+function addLife(k){ if(LIVES.n>=MAX_LIVES) LIVES.ts=Date.now(); LIVES.n=Math.min(MAX_LIVES,LIVES.n+(k||1)); saveLives(); }
+function msClock(ms){ ms=Math.max(0,ms); const m=Math.floor(ms/60000), s=Math.floor((ms%60000)/1000); return (m<10?'0':'')+m+':'+(s<10?'0':'')+s; }
+function renderLives(){
+  regenLives();
+  const h=$('hearts'); if(h) h.textContent='❤️'.repeat(LIVES.n)+'🤍'.repeat(MAX_LIVES-LIVES.n);
+  const left=REGEN_MS-(Date.now()-LIVES.ts);
+  const t=$('ltimer'); if(t) t.textContent = LIVES.n>=MAX_LIVES ? 'полные' : ('+1 через '+msClock(left));
+  const nt=$('nolives-timer'); if(nt) nt.textContent = LIVES.n>=MAX_LIVES ? '00:00' : msClock(left);
+  // авто-выход из окна «нет жизней», когда жизнь восстановилась
+  const nl=$('ov-nolives');
+  if(nl && nl.classList.contains('show') && LIVES.n>0){ hide('ov-nolives'); startLevel(LEVEL); }
+}
+setInterval(renderLives, 1000);
+
+/* ================= Ежедневная награда + стрик ================= */
+const DAILY_KEY='ce_daily_'+USER_ID;
+const DAILY_REWARDS=[ {h:1,b:0,s:0},{h:1,b:1,s:0},{h:2,b:1,s:0},{h:2,b:1,s:1},{h:3,b:2,s:1},{h:3,b:2,s:2},{h:5,b:3,s:3} ];
+function dayStr(d){ return d.getFullYear()+'-'+(d.getMonth()+1)+'-'+d.getDate(); }
+function todayStr(){ return dayStr(new Date()); }
+function loadDaily(){ try{ return JSON.parse(localStorage.getItem(DAILY_KEY))||{last:'',streak:0}; }catch(e){ return {last:'',streak:0}; } }
+function saveDaily(o){ try{ localStorage.setItem(DAILY_KEY, JSON.stringify(o)); }catch(e){} }
+function dailyAvailable(){ return loadDaily().last !== todayStr(); }
+function nextStreak(){
+  const d=loadDaily();
+  if(d.last===todayStr()) return d.streak;
+  const y=new Date(); y.setDate(y.getDate()-1);
+  if(d.last===dayStr(y)) return (d.streak%7)+1; // продолжаем (цикл 7)
+  return 1; // пропустил день — стрик сброшен
+}
+let DAILY_PENDING=1;
+function rewardIcons(r){ return '🔨'.repeat(r.h)+'💣'.repeat(r.b)+'🔀'.repeat(r.s); }
+function renderDailyRow(cur){
+  const row=$('daily-row'); if(!row) return; row.innerHTML='';
+  for(let i=1;i<=7;i++){
+    const r=DAILY_REWARDS[i-1];
+    const cell=document.createElement('div');
+    cell.className='dcell'+(i===cur?' cur':'')+(i<cur?' done':'');
+    cell.innerHTML='<div class="dd">'+i+'</div><div class="dr">'+rewardIcons(r)+'</div>';
+    row.appendChild(cell);
+  }
+}
+function openDaily(){
+  DAILY_PENDING=nextStreak();
+  renderDailyRow(DAILY_PENDING);
+  const sub=$('daily-sub'); if(sub) sub.textContent='День '+DAILY_PENDING+' подряд — забери бустеры!';
+  show('ov-daily');
+}
+function claimDaily(){
+  const r=DAILY_REWARDS[Math.min(DAILY_PENDING,7)-1];
+  boosters.hammer+=r.h; boosters.bomb+=r.b; boosters.shuffle+=r.s; renderBoosters();
+  saveDaily({last:todayStr(), streak:DAILY_PENDING});
+  hide('ov-daily'); sfxCoin(); haptic('success');
+  toast('🎁 Награда получена! Стрик: '+DAILY_PENDING+' дн.');
+  updateDailyBtn();
+}
+function updateDailyBtn(){ const b=$('dailybtn'); if(b) b.classList.toggle('ready', dailyAvailable()); }
+(function(){
+  const c=$('daily-claim'), x=$('daily-close'), b=$('dailybtn');
+  if(c) c.onclick=claimDaily;
+  if(x) x.onclick=()=>hide('ov-daily');
+  if(b) b.onclick=()=>{ if(dailyAvailable()) openDaily(); else toast('Награду уже забрал — приходи завтра!'); };
+})();
+
 (function boot(){
   const s=load();
   // прогресс с сервера (бот передаёт ?lvl= в ссылке) — восстанавливаем даже после очистки кэша
   const q=new URLSearchParams(location.search);
   const srvBest=parseInt(q.get('lvl')||'0',10)||0;
+  SRV_BAL=parseInt(q.get('bal')||'0',10)||0;   // реальный баланс CITY из бота
   BEST    = Math.max(s.best||0, srvBest);
   CLAIMED = Math.max(s.claimed||0, srvBest);   // серверный best ботом уже оплачен
   LEVEL   = Math.max(s.level||1, srvBest+1);
   save();                                       // сразу фиксируем восстановленное
   // ждём layout, чтобы clientWidth был корректным
-  requestAnimationFrame(()=>{ startLevel(LEVEL); });
+  requestAnimationFrame(()=>{
+    renderCoins();
+    renderLives();
+    startLevel(LEVEL);
+    updateDailyBtn();
+    if(LIVES.n>0 && dailyAvailable()) setTimeout(openDaily, 600);  // ежедневная награда раз в день
+  });
 })();
 </script>
 </body>
