@@ -311,6 +311,7 @@ body{
   </div>
 
   <button class="btn ghost adbonus" id="ad-bonus">📺 +1 бустер за рекламу</button>
+  <button class="btn claim-big" id="invite-btn" style="margin-top:8px">👥 Пригласи друга → бонус</button>
 
   <div class="claimbar">
     <div class="info"><div class="t">ЗАРАБОТАНО CITY</div><div class="v" id="claimval">0</div></div>
@@ -352,6 +353,20 @@ body{
     <p>Хочешь начать с запасом? Посмотри короткую рекламу и получи +5 ходов.</p>
     <button class="btn claim-big" id="boost-yes">📺 +5 ходов</button>
     <div class="row"><button class="btn ghost" id="boost-no" style="flex:1">Начать без бонуса</button></div>
+  </div>
+</div>
+
+<!-- INVITE -->
+<div class="overlay" id="ov-invite">
+  <div class="card">
+    <div class="em">👥</div>
+    <h2>Пригласи друга</h2>
+    <p>За каждого друга, который зайдёт по твоей ссылке, ты получишь <b>+500 монет</b> в боте! 🎁</p>
+    <button class="btn claim-big" id="invite-share">📤 Поделиться ссылкой</button>
+    <div class="row">
+      <button class="btn ghost" id="invite-copy" style="flex:1">Копировать</button>
+      <button class="btn ghost" id="invite-close" style="flex:1">Закрыть</button>
+    </div>
   </div>
 </div>
 
@@ -1093,6 +1108,29 @@ let rsT=null;
 window.addEventListener('resize',()=>{ clearTimeout(rsT); rsT=setTimeout(()=>{ computeTile(); positionAll(false); },120); });
 
 /* ================= Boot ================= */
+/* ================= Реферальная система (пригласи друга) ================= */
+const BOT_USERNAME = 'citympirebot';   // юзернейм твоего бота
+function refLink(){ return 'https://t.me/'+BOT_USERNAME+'?start='+USER_ID; }
+function shareInvite(){
+  const link=refLink();
+  const text='🎮 Играй со мной в CityEmpire Match — собирай комбо, проходи уровни и зарабатывай CITY! Заходи 👇';
+  const shareUrl='https://t.me/share/url?url='+encodeURIComponent(link)+'&text='+encodeURIComponent(text);
+  if(tg && tg.openTelegramLink){ tgSafe(()=>tg.openTelegramLink(shareUrl)); }
+  else { copyInvite(); }
+}
+function copyInvite(){
+  const link=refLink();
+  try{ navigator.clipboard.writeText(link); toast('Ссылка скопирована — отправь другу!'); }
+  catch(e){ toast(link); }
+}
+(function(){
+  const ib=$('invite-btn'), sh=$('invite-share'), cp=$('invite-copy'), cl=$('invite-close');
+  if(ib) ib.onclick=()=>show('ov-invite');
+  if(sh) sh.onclick=shareInvite;
+  if(cp) cp.onclick=copyInvite;
+  if(cl) cl.onclick=()=>hide('ov-invite');
+})();
+
 /* ================= Достижения ================= */
 const ACH_KEY='ce_ach_'+USER_ID;
 const ACH_DEFS=[
