@@ -11,22 +11,22 @@
 <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@700;900&family=Fredoka:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
 :root{
-  --bg-0:#1a0f55; --bg-1:#3a1ca0; --panel:#26156e; --panel-2:#3a23a8;
-  --line:#6a4ce0; --gold:#ffd83a; --gold-2:#ffb01e; --gold-deep:#c9800f;
-  --text:#ffffff; --muted:#cdbfff;
+  --bg-0:#0a1c4d; --bg-1:#143a86; --panel:#11265e; --panel-2:#1d3f8c;
+  --line:#3e6bd6; --gold:#ffd54a; --gold-2:#f5a623; --gold-deep:#b9760c;
+  --text:#ffffff; --muted:#bcd0ff;
   --g-amethyst:#c44dff; --g-emerald:#16e58a; --g-citrine:#ffd21a;
   --g-ruby:#ff3666; --g-sapphire:#1f9bff; --g-topaz:#ff871e;
   --ok:#16e58a; --bad:#ff3666;
-  --shadow:0 10px 30px rgba(20,0,60,.5);
+  --shadow:0 10px 30px rgba(4,14,48,.55);
 }
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
 html,body{margin:0;height:100%;overscroll-behavior:none}
 body{
   font-family:'Fredoka',system-ui,sans-serif;color:var(--text);
   background:
-    radial-gradient(900px 520px at 18% -8%, #ff3d8b55 0%, transparent 58%),
-    radial-gradient(900px 520px at 88% 4%, #14d6ff55 0%, transparent 58%),
-    radial-gradient(1200px 700px at 50% 110%, #ffb01e44 0%, transparent 60%),
+    radial-gradient(900px 520px at 18% -8%, rgba(90,160,255,.32) 0%, transparent 58%),
+    radial-gradient(900px 520px at 88% 4%, rgba(255,205,74,.22) 0%, transparent 58%),
+    radial-gradient(1200px 700px at 50% 112%, rgba(245,166,35,.28) 0%, transparent 60%),
     linear-gradient(180deg,var(--bg-0),var(--bg-1));
   background-attachment:fixed;
   min-height:100dvh;display:flex;flex-direction:column;align-items:center;
@@ -42,11 +42,11 @@ body{
 /* ---------- header ---------- */
 .top{display:flex;align-items:center;justify-content:space-between;gap:10px}
 .brand{display:flex;align-items:center;gap:9px;min-width:0}
-.wiz{font-size:30px;line-height:1;filter:drop-shadow(0 0 10px rgba(180,108,255,.7));transition:transform .2s}
+.wiz{font-size:30px;line-height:1;filter:drop-shadow(0 0 10px rgba(255,205,74,.8));transition:transform .2s}
 .wiz.cast{animation:cast .55s ease}
 @keyframes cast{0%{transform:scale(1) rotate(0)}30%{transform:scale(1.25) rotate(-8deg)}100%{transform:scale(1) rotate(0)}}
 .title{font-family:'Cinzel Decorative',serif;font-weight:900;font-size:16px;letter-spacing:.5px;line-height:1;
-  background:linear-gradient(180deg,#fff,#cdbcff);-webkit-background-clip:text;background-clip:text;color:transparent}
+  background:linear-gradient(180deg,#fff,#ffe79a);-webkit-background-clip:text;background-clip:text;color:transparent}
 .title small{display:block;font-family:'Fredoka';font-weight:500;font-size:10.5px;letter-spacing:3px;color:var(--muted);margin-top:2px}
 .purse{display:inline-flex;align-items:center;gap:6px;background:linear-gradient(180deg,var(--panel-2),var(--panel));
   border:1px solid var(--line);border-radius:12px;padding:5px 11px;box-shadow:var(--shadow);white-space:nowrap;flex:none}
@@ -85,12 +85,13 @@ body{
 
 /* ---------- board ---------- */
 .board-wrap{position:relative;width:100%;aspect-ratio:1/1;
-  background:radial-gradient(120% 120% at 50% 0%, #2a1f54 0%, #1a1338 100%);
-  border:1px solid var(--line);border-radius:22px;box-shadow:var(--shadow),inset 0 0 40px rgba(0,0,0,.35);
-  padding:6px;touch-action:none;overflow:hidden}
-.board-wrap::before{content:"";position:absolute;inset:6px;border-radius:18px;
-  border:1px solid rgba(180,108,255,.18);pointer-events:none}
-.board{position:absolute;inset:6px}
+  background:radial-gradient(120% 120% at 50% 0%, #1a3470 0%, #0b1d44 100%);
+  border:2px solid var(--gold);border-radius:24px;
+  box-shadow:0 0 0 4px #0a1c4d,0 0 0 5px rgba(255,213,74,.35),var(--shadow),inset 0 0 44px rgba(0,0,0,.4);
+  padding:7px;touch-action:none;overflow:hidden}
+.board-wrap::before{content:"";position:absolute;inset:7px;border-radius:18px;
+  border:2px solid rgba(255,213,74,.28);pointer-events:none}
+.board{position:absolute;inset:7px}
 .tile{position:absolute;top:0;left:0;display:flex;align-items:center;justify-content:center;
   will-change:transform;transition:transform .3s cubic-bezier(.3,1.2,.5,1)}
 .gem{width:86%;height:86%;border-radius:26%;display:flex;align-items:center;justify-content:center;
@@ -100,10 +101,28 @@ body{
   background:rgba(255,255,255,.75);filter:blur(1px)}
 .gem .sym{font-size:clamp(13px,5.4vw,22px);font-weight:700;color:rgba(255,255,255,.92);
   text-shadow:0 1px 2px rgba(0,0,0,.4);z-index:1}
+.spi{position:absolute;z-index:2;font-size:clamp(15px,6vw,26px);line-height:1;
+  filter:drop-shadow(0 1px 3px rgba(0,0,0,.6));pointer-events:none}
+.spi[data-dir="V"]{transform:rotate(-90deg)}
+.gem.isspecial{box-shadow:0 0 0 2px var(--gold),0 0 16px var(--gold),
+  inset 0 -5px 8px rgba(0,0,0,.4),inset 0 4px 6px rgba(255,255,255,.55),0 4px 9px rgba(0,0,0,.35);
+  animation:spglow 1.4s ease-in-out infinite}
+.gem.isspecial .sym{opacity:.18}
+@keyframes spglow{0%,100%{box-shadow:0 0 0 2px var(--gold),0 0 12px var(--gold),inset 0 -5px 8px rgba(0,0,0,.4),inset 0 4px 6px rgba(255,255,255,.55)}50%{box-shadow:0 0 0 2px var(--gold),0 0 22px var(--gold),inset 0 -5px 8px rgba(0,0,0,.4),inset 0 4px 6px rgba(255,255,255,.55)}}
+.tile.born .gem{animation:bornpop .4s cubic-bezier(.3,1.5,.5,1)}
+@keyframes bornpop{0%{transform:scale(.3) rotate(-20deg)}60%{transform:scale(1.25) rotate(8deg)}100%{transform:scale(1)}}
 .tile.sel .gem{transform:scale(1.12);box-shadow:0 0 0 3px var(--gold),0 0 14px var(--gold)}
 .tile.pop .gem{transform:scale(0) rotate(140deg);opacity:0;transition:transform .22s ease,opacity .22s ease}
 .tile.hit .gem{animation:hit .22s ease}
 @keyframes hit{50%{transform:scale(1.15)}}
+.tile.wrong .gem{animation:wrongflash .35s ease}
+@keyframes wrongflash{0%,100%{filter:none}50%{filter:drop-shadow(0 0 9px #ff3b6b) brightness(1.3)}}
+.tile.hint .gem{animation:hintpulse .8s ease-in-out infinite}
+@keyframes hintpulse{0%,100%{transform:scale(1)}50%{transform:scale(1.18);filter:brightness(1.4)}}
+.goldp{position:fixed;width:10px;height:10px;border-radius:50%;pointer-events:none;z-index:58;
+  background:radial-gradient(circle,#fff,#ffd34a 60%,#ffb01e);box-shadow:0 0 10px #ffd34a;
+  animation:goldp .6s ease-out forwards}
+@keyframes goldp{0%{transform:translate(0,0) scale(1);opacity:1}100%{transform:translate(var(--gx),var(--gy)) scale(.2);opacity:0}}
 
 .g0{background:radial-gradient(circle at 34% 24%,#f0d4ff 0%,var(--g-amethyst) 55%,#7d23c9 100%)}
 .g1{background:radial-gradient(circle at 34% 24%,#b6ffe0 0%,var(--g-emerald) 55%,#06a862 100%)}
@@ -122,6 +141,29 @@ body{
 .fxflash{position:fixed;inset:0;pointer-events:none;z-index:59;
   background:radial-gradient(circle at 50% 45%,rgba(255,255,255,.85),transparent 60%);opacity:0;animation:fxflash .38s ease}
 @keyframes fxflash{0%{opacity:.85}100%{opacity:0}}
+.boom{position:absolute;border-radius:50%;pointer-events:none;z-index:7;
+  border:3px solid #ffd34a;box-shadow:0 0 30px 10px rgba(255,160,40,.8),inset 0 0 22px rgba(255,120,0,.7);
+  animation:boomring .5s ease-out forwards}
+@keyframes boomring{0%{transform:scale(.2);opacity:1}100%{transform:scale(2.7);opacity:0}}
+.boomcore{position:absolute;border-radius:50%;pointer-events:none;z-index:7;
+  background:radial-gradient(circle,#fff 0%,#ffe08a 32%,#ff7a18 66%,rgba(255,60,0,0) 100%);
+  animation:boomcore .45s ease-out forwards}
+@keyframes boomcore{0%{transform:scale(.3);opacity:1}100%{transform:scale(1.9);opacity:0}}
+.boomp{position:absolute;width:9px;height:9px;border-radius:50%;pointer-events:none;z-index:8;
+  background:#ffb02e;box-shadow:0 0 9px #ff7a18;animation:boomp .55s ease-out forwards}
+@keyframes boomp{0%{transform:translate(0,0) scale(1);opacity:1}100%{transform:translate(var(--bx),var(--by)) scale(.2);opacity:0}}
+.firetrail{position:absolute;z-index:8;border-radius:50%;pointer-events:none;
+  background:radial-gradient(circle,#fff,#ffb02e 50%,rgba(255,80,0,0));animation:firefade .36s ease-out forwards}
+@keyframes firefade{0%{opacity:.9;transform:scale(1)}100%{opacity:0;transform:scale(.3)}}
+.confetti{position:fixed;width:10px;height:14px;border-radius:2px;z-index:58;pointer-events:none}
+.bigtext{position:fixed;left:50%;top:40%;transform:translate(-50%,-50%) scale(.5);z-index:60;
+  font-family:'Cinzel Decorative',serif;font-weight:900;font-size:15vw;color:#ffd34a;
+  text-shadow:0 0 22px rgba(255,120,0,.9),0 4px 0 #b35900;pointer-events:none;opacity:0;
+  animation:bigtextpop .7s ease-out forwards}
+@keyframes bigtextpop{0%{opacity:0;transform:translate(-50%,-50%) scale(.4)}25%{opacity:1;transform:translate(-50%,-50%) scale(1.18)}70%{opacity:1;transform:translate(-50%,-50%) scale(1)}100%{opacity:0;transform:translate(-50%,-50%) scale(1.1)}}
+.fxrainbow{position:fixed;inset:0;pointer-events:none;z-index:59;opacity:0;
+  background:radial-gradient(circle at 50% 45%,rgba(255,59,107,.5),rgba(255,211,74,.42) 25%,rgba(34,229,138,.42) 45%,rgba(58,160,255,.42) 65%,transparent 82%);
+  animation:fxflash .5s ease}
 .shake{animation:shk .3s ease}
 @keyframes shk{0%,100%{transform:translate(0,0)}20%{transform:translate(-6px,3px)}
   40%{transform:translate(5px,-4px)}60%{transform:translate(-4px,2px)}80%{transform:translate(4px,-2px)}}
@@ -257,8 +299,8 @@ body{
 <div class="app">
   <div class="top">
     <div class="brand">
-      <div class="wiz" id="wiz">🧙</div>
-      <div class="title">CITYEMPIRE<small>МАТЧ · АРКАНА</small></div>
+      <div class="wiz" id="wiz">👑</div>
+      <div class="title">CITYEMPIRE<small>ROYAL · МАТЧ</small></div>
     </div>
     <div class="topright">
       <div class="purse" title="Общий баланс CITY">
@@ -404,7 +446,7 @@ body{
     <h2>Как играть</h2>
     <div class="tut-list">
       <div class="tut-item"><span class="ti">🔁</span><div>Меняй местами две соседние фишки, чтобы собрать <b>3 и больше</b> в ряд.</div></div>
-      <div class="tut-item"><span class="ti">🚀</span><div><b>4 в ряд</b> — ракета чистит линию. <b>5 в ряд</b> — 🌈 радуга убирает весь цвет!</div></div>
+      <div class="tut-item"><span class="ti">🚀</span><div><b>4 в ряд</b> — ракета чистит линию. <b>Буквой Г/Т</b> — 💣 бомба взрывает область. <b>5 в ряд</b> — 🌈 радуга убирает весь цвет!</div></div>
       <div class="tut-item"><span class="ti">🎯</span><div>Набери <b>цель</b> за отведённые <b>ходы</b> — и уровень пройден.</div></div>
       <div class="tut-item"><span class="ti">🪙</span><div>За уровни получаешь <b>монеты</b> (магазин) и редкий <b>CITY</b> (выводимый).</div></div>
     </div>
@@ -545,9 +587,19 @@ function computeTile(){ const w = boardEl.clientWidth; tile = w / N; }
 function makeTile(type,r,c){
   const el=document.createElement('div');
   el.className='tile';
-  el.innerHTML=`<div class="gem g${type}"><span class="sym">${SYM[type]}</span></div>`;
+  el.innerHTML=`<div class="gem g${type}"><span class="sym">${SYM[type]}</span><span class="spi"></span></div>`;
   boardEl.appendChild(el);
-  return {type,r,c,el,spawnFrom:null};
+  return {type,r,c,el,special:null,colorTarget:null,spawnFrom:null};
+}
+function setSpecial(t,sp){
+  if(!t||!t.el) return;
+  t.special=sp;
+  const gem=t.el.querySelector('.gem'), spi=t.el.querySelector('.spi');
+  if(!gem||!spi) return;
+  gem.classList.toggle('isspecial', !!sp);
+  spi.setAttribute('data-dir', sp||'');
+  spi.textContent = (sp==='H'||sp==='V') ? '🚀' : sp==='B' ? '💣' : sp==='C' ? '🌈' : '';
+  if(sp){ t.el.classList.remove('born'); void t.el.offsetWidth; t.el.classList.add('born'); }
 }
 
 function place(t, animate=true){
@@ -593,36 +645,50 @@ function findMatches(){
   return m;
 }
 
-/* Спец-фишки: 4 в ряд → ракета (чистит линию), 5+ → радуга (чистит весь цвет) */
-function findMatchesEx(){
-  const cells=new Set(); const blasts=[];
-  // горизонтали
+/* Спец-фишки ОСТАЮТСЯ на поле: 4 в ряд → 🚀 ракета (H/V), Г/Т/+ → 💣 бомба, 5 в ряд → 🌈 радуга.
+   Активируются при свайпе или попадании в совпадение, с цепными взрывами. */
+function pickCell(run, lastSwap, reserved){
+  if(lastSwap){ for(const rc of run.cells){ if(rc[0]===lastSwap.r && rc[1]===lastSwap.c && !reserved.has(rc[0]+','+rc[1])) return rc; } }
+  const mid=run.cells[Math.floor(run.cells.length/2)];
+  if(mid && !reserved.has(mid[0]+','+mid[1])) return mid;
+  for(const rc of run.cells){ if(!reserved.has(rc[0]+','+rc[1])) return rc; }
+  return null;
+}
+function analyzeBoard(lastSwap){
+  const inRun=new Set(), hCells=new Set(), vCells=new Set(); const runs=[];
   for(let r=0;r<N;r++){ let run=1; for(let c=1;c<=N;c++){
     const a=c<N?grid[r][c]:null, b=grid[r][c-1];
     if(c<N && a && b && a.type===b.type) run++;
-    else { if(run>=3){ const start=c-run, color=grid[r][start]?grid[r][start].type:null;
-        for(let k=start;k<c;k++) cells.add(r+','+k);
-        if(run>=5) blasts.push({kind:'color',type:color});
-        else if(run===4) blasts.push({kind:'row',r:r}); }
-      run=1; }
+    else { if(run>=3){ const arr=[],ty=grid[r][c-1]?grid[r][c-1].type:null;
+        for(let k=c-run;k<c;k++){ arr.push([r,k]); inRun.add(r+','+k); hCells.add(r+','+k); }
+        runs.push({dir:'H',cells:arr,len:run,type:ty}); } run=1; }
   }}
-  // вертикали
   for(let c=0;c<N;c++){ let run=1; for(let r=1;r<=N;r++){
     const a=r<N?grid[r][c]:null, b=grid[r-1][c];
     if(r<N && a && b && a.type===b.type) run++;
-    else { if(run>=3){ const start=r-run, color=(grid[start]&&grid[start][c])?grid[start][c].type:null;
-        for(let k=start;k<r;k++) cells.add(k+','+c);
-        if(run>=5) blasts.push({kind:'color',type:color});
-        else if(run===4) blasts.push({kind:'col',c:c}); }
-      run=1; }
+    else { if(run>=3){ const arr=[],ty=grid[r-1][c]?grid[r-1][c].type:null;
+        for(let k=r-run;k<r;k++){ arr.push([k,c]); inRun.add(k+','+c); vCells.add(k+','+c); }
+        runs.push({dir:'V',cells:arr,len:run,type:ty}); } run=1; }
   }}
-  // применяем взрывы — расширяем набор клеток
-  for(const bl of blasts){
-    if(bl.kind==='row'){ for(let c=0;c<N;c++) if(grid[bl.r][c]) cells.add(bl.r+','+c); }
-    else if(bl.kind==='col'){ for(let r=0;r<N;r++) if(grid[r][bl.c]) cells.add(r+','+bl.c); }
-    else if(bl.kind==='color' && bl.type!=null){ for(let r=0;r<N;r++)for(let c=0;c<N;c++) if(grid[r][c]&&grid[r][c].type===bl.type) cells.add(r+','+c); }
+  const creates=[], reserved=new Set();
+  for(const key of hCells){ if(vCells.has(key) && !reserved.has(key)){ const p=key.split(',').map(Number);
+    creates.push({r:p[0],c:p[1],sp:'B',type:grid[p[0]][p[1]]?grid[p[0]][p[1]].type:null}); reserved.add(key); } }
+  for(const rn of runs){
+    if(rn.len>=5){ const cell=pickCell(rn,lastSwap,reserved); if(cell){ creates.push({r:cell[0],c:cell[1],sp:'C',type:rn.type}); reserved.add(cell[0]+','+cell[1]); } }
+    else if(rn.len===4){ const cell=pickCell(rn,lastSwap,reserved); if(cell){ creates.push({r:cell[0],c:cell[1],sp:(rn.dir==='H'?'H':'V'),type:rn.type}); reserved.add(cell[0]+','+cell[1]); } }
   }
-  return {cells, blasts};
+  const clear=new Set(); inRun.forEach(k=>{ if(!reserved.has(k)) clear.add(k); });
+  return {clear, creates, reserved};
+}
+/* клетки, которые уничтожает активированная спец-фишка */
+function specialCells(t){
+  const out=new Set(); if(!t||!t.special) return out;
+  if(t.special==='H'){ for(let c=0;c<N;c++) if(grid[t.r][c]) out.add(t.r+','+c); }
+  else if(t.special==='V'){ for(let r=0;r<N;r++) if(grid[r][t.c]) out.add(r+','+t.c); }
+  else if(t.special==='B'){ for(let dr=-1;dr<=1;dr++)for(let dc=-1;dc<=1;dc++){ const rr=t.r+dr,cc=t.c+dc; if(rr>=0&&rr<N&&cc>=0&&cc<N&&grid[rr][cc]) out.add(rr+','+cc); } }
+  else if(t.special==='C'){ let tgt=t.colorTarget; if(tgt==null && grid[t.r][t.c]) tgt=grid[t.r][t.c].type;
+    for(let r=0;r<N;r++)for(let c=0;c<N;c++){ const g=grid[r][c]; if(g && (g.type===tgt || g.special==='C')) out.add(r+','+c); } }
+  return out;
 }
 
 function hasPossibleMove(){
@@ -651,8 +717,25 @@ function hasPossibleMove(){
   }
   return false;
 }
-
-/* ================= Gravity / refill ================= */
+function findHint(){
+  const t=(r,c)=>grid[r][c]?grid[r][c].type:-1;
+  const wouldMatch=(r,c)=>{ const v=t(r,c);
+    if(c>=2 && t(r,c-1)===v && t(r,c-2)===v) return true;
+    if(c<=N-3 && t(r,c+1)===v && t(r,c+2)===v) return true;
+    if(c>=1 && c<=N-2 && t(r,c-1)===v && t(r,c+1)===v) return true;
+    if(r>=2 && t(r-1,c)===v && t(r-2,c)===v) return true;
+    if(r<=N-3 && t(r+1,c)===v && t(r+2,c)===v) return true;
+    if(r>=1 && r<=N-2 && t(r-1,c)===v && t(r+1,c)===v) return true;
+    return false; };
+  const swapTry=(r1,c1,r2,c2)=>{ const A=grid[r1][c1], B=grid[r2][c2];
+    grid[r1][c1]=B; grid[r2][c2]=A; const ok=wouldMatch(r1,c1)||wouldMatch(r2,c2);
+    grid[r1][c1]=A; grid[r2][c2]=B; return ok; };
+  for(let r=0;r<N;r++)for(let c=0;c<N;c++){
+    if(c<N-1 && swapTry(r,c,r,c+1)) return [[r,c],[r,c+1]];
+    if(r<N-1 && swapTry(r,c,r+1,c)) return [[r,c],[r+1,c]];
+  }
+  return null;
+}
 function applyGravity(){
   for(let c=0;c<N;c++){
     let write=N-1;
@@ -777,7 +860,76 @@ function burstAt(el,color){
   }
 }
 function screenShake(){ if(!boardEl) return; boardEl.classList.remove('shake'); void boardEl.offsetWidth; boardEl.classList.add('shake'); setTimeout(()=>boardEl.classList.remove('shake'),300); }
-function fxFlash(){ const f=document.createElement('div'); f.className='fxflash'; document.body.appendChild(f); setTimeout(()=>f.remove(),380); }
+function fxFlash(color){ const f=document.createElement('div'); f.className='fxflash';
+  if(color) f.style.background=`radial-gradient(circle at 50% 45%,${color},transparent 60%)`;
+  document.body.appendChild(f); setTimeout(()=>f.remove(),380); }
+function rainbowFlash(){ const f=document.createElement('div'); f.className='fxrainbow';
+  document.body.appendChild(f); setTimeout(()=>f.remove(),520); }
+function showBigText(txt){ const el=document.createElement('div'); el.className='bigtext'; el.textContent=txt;
+  document.body.appendChild(el); setTimeout(()=>el.remove(),720); }
+function confetti(n){
+  const cols=['#ff3b6b','#ffd34a','#22e58a','#3aa0ff','#c44dff','#ff871e'];
+  for(let i=0;i<n;i++){ setTimeout(()=>{
+    const c=document.createElement('div'); c.className='confetti';
+    c.style.left=(Math.random()*100)+'vw'; c.style.top='-20px';
+    c.style.background=cols[i%cols.length]; c.style.transform=`rotate(${Math.random()*360}deg)`;
+    const dur=1.3+Math.random()*1.4; c.style.animation=`coinfall ${dur}s linear forwards`;
+    fxLayer.appendChild(c); setTimeout(()=>c.remove(),dur*1000+150);
+  }, i*40); }
+}
+function rocketFly(bl){
+  if(!boardEl) return;
+  let fromX,fromY,toX,toY,rot;
+  if(bl.kind==='row'){ fromX=-tile; toX=N*tile; fromY=toY=bl.r*tile+tile*0.1; rot=90; }
+  else { fromY=-tile; toY=N*tile; fromX=toX=bl.c*tile+tile*0.1; rot=180; }
+  const rk=document.createElement('div'); rk.textContent='🚀';
+  rk.style.cssText=`position:absolute;z-index:9;font-size:${tile*0.8}px;left:0;top:0;`+
+    `transform:translate(${fromX}px,${fromY}px) rotate(${rot}deg);transition:transform .34s linear`;
+  boardEl.appendChild(rk);
+  requestAnimationFrame(()=>{ rk.style.transform=`translate(${toX}px,${toY}px) rotate(${rot}deg)`; });
+  let steps=0; const trail=setInterval(()=>{
+    const t=steps/9, x=fromX+(toX-fromX)*t+tile*0.3, y=fromY+(toY-fromY)*t+tile*0.3, s=tile*0.4;
+    const f=document.createElement('div'); f.className='firetrail';
+    f.style.left=x+'px'; f.style.top=y+'px'; f.style.width=s+'px'; f.style.height=s+'px';
+    boardEl.appendChild(f); setTimeout(()=>f.remove(),360);
+    if(++steps>9) clearInterval(trail);
+  },32);
+  setTimeout(()=>rk.remove(),380);
+}
+function explodeAt(r,c){
+  if(!boardEl) return;
+  const cx=(c+0.5)*tile, cy=(r+0.5)*tile;
+  const sz=tile*2.3, csz=tile*1.7;
+  const ring=document.createElement('div'); ring.className='boom';
+  ring.style.cssText=`width:${sz}px;height:${sz}px;left:${cx-sz/2}px;top:${cy-sz/2}px`;
+  boardEl.appendChild(ring); setTimeout(()=>ring.remove(),520);
+  const core=document.createElement('div'); core.className='boomcore';
+  core.style.cssText=`width:${csz}px;height:${csz}px;left:${cx-csz/2}px;top:${cy-csz/2}px`;
+  boardEl.appendChild(core); setTimeout(()=>core.remove(),470);
+  for(let i=0;i<20;i++){
+    const p=document.createElement('div'); p.className='boomp';
+    const ang=(Math.PI*2*i)/20 + Math.random()*0.4, dist=tile*(1.1+Math.random()*1.2);
+    p.style.left=cx+'px'; p.style.top=cy+'px';
+    p.style.setProperty('--bx',(Math.cos(ang)*dist)+'px');
+    p.style.setProperty('--by',(Math.sin(ang)*dist)+'px');
+    boardEl.appendChild(p); setTimeout(()=>p.remove(),560);
+  }
+  screenShake(); haptic('heavy');
+}
+function sfxBoom(){ initAudio(); beep(120,.18,'sawtooth',.16); setTimeout(()=>beep(70,.3,'triangle',.18),40); }
+function goldBurst(r,c){
+  if(!boardEl) return;
+  const br=boardEl.getBoundingClientRect();
+  const cx=br.left+(c+0.5)*tile, cy=br.top+(r+0.5)*tile;
+  for(let i=0;i<16;i++){
+    const p=document.createElement('div'); p.className='goldp';
+    const ang=(Math.PI*2*i)/16, dist=tile*(0.9+Math.random());
+    p.style.left=cx+'px'; p.style.top=cy+'px';
+    p.style.setProperty('--gx',(Math.cos(ang)*dist)+'px');
+    p.style.setProperty('--gy',(Math.sin(ang)*dist)+'px');
+    fxLayer.appendChild(p); setTimeout(()=>p.remove(),620);
+  }
+}
 function coinRain(n){
   for(let i=0;i<n;i++){
     setTimeout(()=>{
@@ -796,46 +948,79 @@ function spawnFloat(text, r, c){
   boardEl.appendChild(f); setTimeout(()=>f.remove(),1000);
 }
 function showCombo(n){
-  const el=$('combo'); el.textContent='COMBO ×'+n; el.classList.remove('show'); void el.offsetWidth; el.classList.add('show');
+  const el=$('combo'); el.textContent=(n>=5?'MEGA COMBO ×':'COMBO ×')+n; el.classList.remove('show'); void el.offsetWidth; el.classList.add('show');
 }
 function castWizard(){ const w=$('wiz'); w.classList.remove('cast'); void w.offsetWidth; w.classList.add('cast'); }
 
-async function resolve(){
+/* подсказка хода при простое (как в Royal Match) */
+let hintTimer=null, hintTiles=[];
+function clearHint(){ hintTiles.forEach(t=>{ if(t&&t.el) t.el.classList.remove('hint'); }); hintTiles=[]; }
+function scheduleHint(){
+  if(hintTimer) clearTimeout(hintTimer);
+  hintTimer=setTimeout(()=>{
+    if(isBusy){ scheduleHint(); return; }
+    const h=findHint();
+    if(h){ clearHint(); h.forEach(([r,c])=>{ const t=grid[r][c]; if(t){ t.el.classList.add('hint'); hintTiles.push(t); } }); }
+  }, 5000);
+}
+function resetIdle(){ clearHint(); scheduleHint(); }
+document.addEventListener('pointerdown', resetIdle);
+
+async function resolve(lastSwap, forceFire){
   isBusy=true;
   let cascade=0;
+  try{
   while(true){
-    const res=findMatchesEx();
-    const matches=res.cells;
-    if(matches.size===0) break;
+    const a=analyzeBoard(lastSwap);
+    const clear=a.clear;
+    // активировать уже лежащие спец-фишки, попавшие в совпадение (+ свайп), с цепной реакцией
+    const fired=new Set(), firedTiles=[];
+    const q=[];
+    clear.forEach(k=>{ const [r,c]=k.split(',').map(Number); const t=grid[r][c]; if(t&&t.special) q.push(t); });
+    if(forceFire){ forceFire.forEach(t=>{ if(t&&t.special) q.push(t); }); forceFire=null; }
+    while(q.length){
+      const t=q.shift(); if(!t||!t.special) continue; const key=t.r+','+t.c; if(fired.has(key)) continue;
+      fired.add(key); firedTiles.push({r:t.r,c:t.c,sp:t.special});
+      const eff=specialCells(t);
+      eff.forEach(k=>{ clear.add(k); const [rr,cc]=k.split(',').map(Number); const tt=grid[rr][cc];
+        if(tt&&tt.special && !fired.has(rr+','+cc)) q.push(tt); });
+    }
+    a.reserved.forEach(k=>clear.delete(k));   // не уничтожать только что созданные спец-фишки
+    lastSwap=null;
+    if(clear.size===0 && a.creates.length===0 && firedTiles.length===0) break;
     cascade++;
-    const hasBlast=res.blasts.length>0;
-    const mult=(1+0.5*(cascade-1))*(hasBlast?1.5:1);
-    const gained=Math.round(matches.size*50*mult);
+    const big=firedTiles.length>0;
+    const mult=(1+0.5*(cascade-1))*(big?1.6:1);
+    const gained=Math.round(Math.max(clear.size,1)*50*mult);
     score+=gained;
     if(cascade>=2){ showCombo(cascade); castWizard(); if(cascade===2) achInc('combos'); }
+    // анимации активированных спец-фишек
+    firedTiles.forEach(f=>{
+      if(f.sp==='H'){ rocketFly({kind:'row',r:f.r,c:f.c}); goldBurst(f.r,f.c); achInc('rockets'); }
+      else if(f.sp==='V'){ rocketFly({kind:'col',r:f.r,c:f.c}); goldBurst(f.r,f.c); achInc('rockets'); }
+      else if(f.sp==='B'){ sfxBoom(); explodeAt(f.r,f.c); showBigText('💥 BOOM!'); achInc('rockets'); }
+      else if(f.sp==='C'){ rainbowFlash(); achInc('rainbows'); }
+    });
+    if(big){ screenShake(); fxFlash(); sfxWin(); }
     let fr=0,fc=0,cnt=0;
-    matches.forEach(k=>{ const [r,c]=k.split(',').map(Number); const t=grid[r][c];
+    clear.forEach(k=>{ const [r,c]=k.split(',').map(Number); const t=grid[r][c];
       if(t){ t.el.classList.add('pop'); fr+=r; fc+=c; cnt++; } });
-    haptic(cascade>=3?'medium':'light');
-    sfxMatch(cascade);
+    haptic(cascade>=3?'medium':'light'); sfxMatch(cascade);
     if(cnt) spawnFloat('+'+gained, Math.round(fr/cnt), Math.round(fc/cnt));
-    if(matches.size>=4 || cascade>=2) screenShake();
+    if(clear.size>=4 || cascade>=2) screenShake();
     if(cascade>=3) fxFlash();
-    // эффекты спец-фишек
-    if(hasBlast){
-      screenShake(); fxFlash(); sfxWin();
-      const hasColor=res.blasts.some(b=>b.kind==='color');
-      if(hasColor) achInc('rainbows'); else achInc('rockets');
-      toast(hasColor?'🌈 РАДУГА! Весь цвет уничтожен':'🚀 РАКЕТА! Линия очищена');
-    }
     updateHUD();
-    await sleep(230);
-    matches.forEach(k=>{ const [r,c]=k.split(',').map(Number); const t=grid[r][c];
+    await sleep(220);
+    clear.forEach(k=>{ const [r,c]=k.split(',').map(Number); const t=grid[r][c];
       if(t){ burstAt(t.el, GEM_FX[t.type]||'#fff'); t.el.remove(); grid[r][c]=null; } });
+    // создать новые спец-фишки на зарезервированных клетках
+    a.creates.forEach(cr=>{ const t=grid[cr.r][cr.c]; if(t){ if(cr.type!=null) t.colorTarget=cr.type; setSpecial(t,cr.sp);
+      haptic('medium'); } });
+    if(a.creates.length){ sfxWin(); }
     applyGravity();
-    await sleep(340);
+    await sleep(330);
   }
-  isBusy=false;
+  } finally { isBusy=false; }
   afterTurn();
 }
 
@@ -845,19 +1030,78 @@ function swapModel(a,b){
   grid[a.r][a.c]=b; grid[b.r][b.c]=a;
   const tr=a.r,tc=a.c; a.r=b.r;a.c=b.c; b.r=tr;b.c=tc;
 }
+/* === комбо двух спец-фишек === */
+async function fireCombo(a,b){
+  isBusy=true;
+  try{
+    const s1=a.special, s2=b.special;
+    const has=(x)=>s1===x||s2===x;
+    const cr=a.r, cc=a.c;                  // центр комбо
+    const set=new Set();
+    const addRow=r=>{ if(r<0||r>=N) return; for(let c=0;c<N;c++) if(grid[r][c]) set.add(r+','+c); };
+    const addCol=c=>{ if(c<0||c>=N) return; for(let r=0;r<N;r++) if(grid[r][c]) set.add(r+','+c); };
+    const addBox=(r0,c0,rad)=>{ for(let dr=-rad;dr<=rad;dr++)for(let dc=-rad;dc<=rad;dc++){ const r=r0+dr,c=c0+dc; if(r>=0&&r<N&&c>=0&&c<N&&grid[r][c]) set.add(r+','+c); } };
+    if(s1==='C' && s2==='C'){
+      for(let r=0;r<N;r++)for(let c=0;c<N;c++) if(grid[r][c]) set.add(r+','+c);  // всё поле
+      rainbowFlash(); showBigText('🌈 MEGA!');
+    } else if(has('C')){
+      const other = (s1==='C')? b : a;     // не-радужная фишка
+      const tgt = other.type;
+      for(let r=0;r<N;r++)for(let c=0;c<N;c++){ const g=grid[r][c]; if(g && g.type===tgt){
+        set.add(r+','+c);
+        if(other.special==='H') addRow(r);
+        else if(other.special==='V') addCol(c);
+        else if(other.special==='B') addBox(r,c,1);
+      }}
+      set.add(a.r+','+a.c); set.add(b.r+','+b.c);
+      rainbowFlash(); showBigText('🌈 BOOM!');
+    } else if(s1==='B' && s2==='B'){
+      addBox(cr,cc,2);                      // 5×5
+      sfxBoom(); explodeAt(cr,cc); showBigText('💥 MEGA!');
+    } else if(has('B') && (has('H')||has('V'))){
+      for(let d=-1;d<=1;d++){ addRow(cr+d); addCol(cc+d); }  // толстый крест
+      sfxBoom(); explodeAt(cr,cc); showBigText('💥 CROSS!');
+    } else {
+      addRow(cr); addCol(cc);               // ракета+ракета → крест
+      rocketFly({kind:'row',r:cr,c:cc}); rocketFly({kind:'col',r:cr,c:cc}); showBigText('🚀 CROSS!');
+    }
+    screenShake(); fxFlash('rgba(255,180,40,.85)'); haptic('heavy'); achInc('rockets');
+    score += Math.round(set.size*70); updateHUD();
+    set.forEach(k=>{ const [r,c]=k.split(',').map(Number); const t=grid[r][c]; if(t) t.el.classList.add('pop'); });
+    await sleep(250);
+    set.forEach(k=>{ const [r,c]=k.split(',').map(Number); const t=grid[r][c]; if(t){ burstAt(t.el, GEM_FX[t.type]||'#fff'); t.el.remove(); grid[r][c]=null; } });
+    applyGravity();
+    await sleep(330);
+  } finally { isBusy=false; }
+  await resolve();
+}
 async function trySwap(a,b){
   if(isBusy) return; isBusy=true;
   clearSel();
   sfxSwap();
   swapModel(a,b); place(a); place(b);
   await sleep(300);
-  if(findMatches().size===0){
+  // КОМБО: обе фишки спец-фишки → мощный совмещённый эффект
+  if(a.special && b.special){
+    movesLeft--; updateHUD();
+    await fireCombo(a,b);
+    return;
+  }
+  // радуга + обычная фишка → целимся в цвет этой фишки
+  if(a.special==='C' && !b.special) a.colorTarget=b.type;
+  if(b.special==='C' && !a.special) b.colorTarget=a.type;
+  const special = (a.special||b.special);
+  if(findMatches().size===0 && !special){
     swapModel(a,b); place(a); place(b); // revert
+    a.el.classList.add('wrong'); b.el.classList.add('wrong');
+    setTimeout(()=>{ a.el.classList.remove('wrong'); b.el.classList.remove('wrong'); },360);
     haptic('warning'); sfxBad();
     await sleep(300); isBusy=false; return;
   }
   movesLeft--; updateHUD();
-  await resolve(); // sets isBusy false at end
+  const force=[]; if(a.special) force.push(a); if(b.special) force.push(b);
+  isBusy=false;                       // resolve выставит снова
+  await resolve({r:a.r,c:a.c}, force.length?force:null);
 }
 
 function afterTurn(){
@@ -875,10 +1119,11 @@ function shuffleBoard(animate){
     for(let i=all.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); [all[i],all[j]]=[all[j],all[i]]; }
     let i=0;
     for(let r=0;r<N;r++)for(let c=0;c<N;c++){ const t=grid[r][c]; t.type=all[i++];
-      t.el.querySelector('.gem').className='gem g'+t.type; t.el.querySelector('.sym').textContent=SYM[t.type]; }
+      t.el.querySelector('.gem').className='gem g'+t.type+(t.special?' isspecial':''); t.el.querySelector('.sym').textContent=SYM[t.type]; }
     tries++;
   }while((findMatches().size>0 || !hasPossibleMove()) && tries<40);
   positionAll(animate);
+  if(animate){ screenShake(); haptic('medium'); }
 }
 
 /* ================= Boosters ================= */
@@ -991,6 +1236,7 @@ function startLevel(lv){
   save();
   // перед сложным уровнем (каждый 5-й) — предложить рекламу за +5 ходов
   if(lv % 5 === 0){ show('ov-boost'); }
+  if(typeof resetIdle==='function') resetIdle();
 }
 
 function win(){
@@ -1001,7 +1247,7 @@ function win(){
   if(wasNew) achInc('levels');
   save();
   haptic('success');
-  coinRain(26); fxFlash(); screenShake(); sfxWin();
+  coinRain(26); confetti(40); fxFlash('rgba(34,229,138,.8)'); screenShake(); sfxWin();
   $('win-stars').textContent=starStr(stars);
   // монеты — за каждый уровень
   const coinsGain = levelCoins(LEVEL, stars);
