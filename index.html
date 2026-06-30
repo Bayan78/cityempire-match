@@ -300,7 +300,7 @@ body{
   <div class="top">
     <div class="brand">
       <div class="wiz" id="wiz">👑</div>
-      <div class="title">CITYEMPIRE<small>ROYAL · МАТЧ · v33</small></div>
+      <div class="title">CITYEMPIRE<small>ROYAL · МАТЧ · v34</small></div>
     </div>
     <div class="topright">
       <div class="purse" title="Общий баланс CITY">
@@ -1224,10 +1224,11 @@ function refreshMainButton(){
 function startLevel(lv){
   if(typeof LIVES!=='undefined' && LIVES.n<=0){ renderLives(); show('ov-nolives'); return; }
   LEVEL=lv;
-  // средняя сложность: лёгкий старт, после 5 уровня плавный линейный рост (без резких скачков)
-  if(lv<=5){ target = 800 + (lv-1)*450; }            // 1-5: лёгкие
-  else { target = 800 + 4*450 + (lv-5)*550; }        // 6+: средний линейный рост
-  movesLeft = lv<=3 ? 26 : lv<=6 ? 23 : lv<=10 ? 22 : lv<=16 ? 21 : 20;
+  // до 30 — средне и с запасом ходов; после 30 — заметно сложнее
+  if(lv<=5){ target = 800 + (lv-1)*450; }                         // 1-5: лёгкие
+  else if(lv<=30){ target = 800 + 4*450 + (lv-5)*500; }           // 6-30: средние
+  else { target = 800 + 4*450 + 25*500 + (lv-30)*900 + (lv-30)*(lv-30)*20; }  // 31+: сложнее + ускорение
+  movesLeft = lv<=5 ? 28 : lv<=15 ? 26 : lv<=30 ? 25 : lv<=45 ? 22 : 20;
   score=0; armed=null; selected=null; downCell=null;
   boosters.hammer=2; boosters.bomb=1; boosters.shuffle=1;
   renderBoosters();
